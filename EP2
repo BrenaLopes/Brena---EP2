@@ -128,3 +128,25 @@ def questao_para_texto(questao, id):
     corpo_opcoes = '\n'.join(opcoes_formatadas)
 
     return cabecalho + corpo_opcoes
+
+def gera_ajuda(questao):
+    opcoes_incorretas = []
+    chave_correta = questao['correta']
+
+    for chave, valor_texto in questao['opcoes'].items():
+        if chave != chave_correta:
+            opcoes_incorretas.append(valor_texto)
+
+    quantidade_de_dicas = random.randint(1, 2)
+    
+    if quantidade_de_dicas > len(opcoes_incorretas):
+        quantidade_de_dicas = len(opcoes_incorretas)
+
+    
+    #random.sample: sorteia nomes garantindo que um mesmo item não vai repetir
+    dicas_selecionadas = random.sample(opcoes_incorretas, k=quantidade_de_dicas)
+
+    #str de saída
+    texto_das_dicas = ' | '.join(dicas_selecionadas)
+    
+    return f"DICA:\nOpções certamente erradas: {texto_das_dicas}"
