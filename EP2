@@ -114,3 +114,17 @@ def sorteia_questao_inedita(questoes, nivel, questoes_sorteadas):
         if questao_sugerida not in questoes_sorteadas:
             questoes_sorteadas.append(questao_sugerida)
             return questao_sugerida
+        
+
+def questao_para_texto(questao, id):
+    cabecalho = f"{'-'*40}\nQUESTAO {id}\n\n{questao['titulo']}\n\nRESPOSTAS:\n"
+
+    opcoes_formatadas = []
+
+    for chave, valor in sorted(questao['opcoes'].items()):
+        opcoes_formatadas.append(f"{chave}: {valor}")
+
+    #junta as linhas das opções e separa com quebra de linha
+    corpo_opcoes = '\n'.join(opcoes_formatadas)
+
+    return cabecalho + corpo_opcoes
