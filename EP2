@@ -18,3 +18,72 @@ def transforma_base(questoes):
     if lista_dificil != []:
         niveis["dificil"] = lista_dificil
     return niveis
+
+def valida_questao(questao):
+    erros = {}
+
+    chaves_necessarias = ['titulo', 'nivel', 'opcoes', 'correta']
+
+    
+    for chave in chaves_necessarias:
+        if chave not in questao:
+            erros[chave] = 'nao_encontrado'
+
+    
+    if len(questao) != 4:
+        erros['outro'] = 'numero_chaves_invalido'
+
+    
+    if 'titulo' in questao:
+        titulo = questao['titulo']
+        if titulo.strip() == '':
+            erros['titulo'] = 'vazio'
+
+    
+    if 'nivel' in questao:
+        nivel = questao['nivel']
+        if nivel != 'facil' and nivel != 'medio' and nivel != 'dificil':
+            erros['nivel'] = 'valor_errado'
+
+    
+    if 'opcoes' in questao:
+        opcoes = questao['opcoes']
+
+        if len(opcoes) != 4:
+            erros['opcoes'] = 'tamanho_invalido'
+        else:
+            tem_A = False
+            tem_B = False
+            tem_C = False
+            tem_D = False
+            extras = False
+
+            for chave in opcoes:
+                if chave == 'A':
+                    tem_A = True
+                elif chave == 'B':
+                    tem_B = True
+                elif chave == 'C':
+                    tem_C = True
+                elif chave == 'D':
+                    tem_D = True
+                else:
+                    extras = True
+
+            if not (tem_A and tem_B and tem_C and tem_D) or extras:
+                erros['opcoes'] = 'chave_invalida_ou_nao_encontrada'
+            else:
+                op_vazias = {}
+                for letra in ['A', 'B', 'C', 'D']:
+                    if opcoes[letra].strip() == '':
+                        op_vazias[letra] = 'vazia'
+                if len(op_vazias) > 0:
+                    erros['opcoes'] = op_vazias
+
+    
+    if 'correta' in questao:
+        correta = questao['correta']
+        if correta != 'A' and correta != 'B' and correta != 'C' and correta != 'D':
+            erros['correta'] = 'valor_errado'
+
+    return erros
