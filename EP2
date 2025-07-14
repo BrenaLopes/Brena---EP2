@@ -1,3 +1,5 @@
+import random
+
 def transforma_base(questoes):
     niveis = {}
     lista_facil = []
@@ -97,3 +99,9 @@ def valida_questoes(lista_questoes):
         resultado.append(erros_da_questao)
 
     return resultado
+
+
+def sorteia_questao(questoes,nivel):
+    lista = questoes[nivel]
+    sorteada = random.choice(lista)
+    return sorteada
