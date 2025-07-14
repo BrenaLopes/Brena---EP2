@@ -1,0 +1,20 @@
+def transforma_base(questoes):
+    niveis = {}
+    lista_facil = []
+    lista_medio = []
+    lista_dificil = []
+    for i in range(len(questoes)):
+        questao = questoes[i]  
+        if questao["nivel"] == "facil":
+            lista_facil.append(questao)
+        elif questao["nivel"] == "medio":
+            lista_medio.append(questao)
+        elif  questao["nivel"] == "dificil":
+            lista_dificil.append(questao)
+    if lista_facil != []:        
+        niveis["facil"] = lista_facil
+    if lista_medio != []:
+        niveis["medio"] = lista_medio
+    if lista_dificil != []:
+        niveis["dificil"] = lista_dificil
+    return niveis
