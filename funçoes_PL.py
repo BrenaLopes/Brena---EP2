@@ -164,7 +164,7 @@ def gera_ajuda(questao):
     return ""
 
 def inicia_jogo(banco_de_questoes):
-    print(f"{Fore.BLUE}Olá! Você está na Fortuna DesSoft e terá a oportunidade de enriquecer!{Style.RESET_ALL}")
+    print(f"{Style.BRIGHT}{Fore.BLUE}Olá! Você está na Fortuna DesSoft e terá a oportunidade de enriquecer!{Style.RESET_ALL}")
     nome_jogador = input("Qual seu nome?")
 
     print(f"\nOk {Style.BRIGHT}{Fore.YELLOW}{nome_jogador.upper()}, você tem direito a pular 3 vezes e 2 ajudas!")
@@ -180,7 +180,7 @@ def inicia_jogo(banco_de_questoes):
     niveis = ['facil', 'medio', 'dificil']
 
     for i, nivel in enumerate(niveis): # Usamos enumerate para saber o índice do nível
-        print(f"\nO jogo já vai começar! Lá vem a primeira questão!")
+        print(f"\n{Fore.CYAN}O jogo já vai começar! Lá vem a primeira questão!{Style.RESET_ALL}")
         print(f"Vamos comecar com questões do nível {nivel.upper()}!")
         input("Aperte ENTER para continuar...")
 
@@ -225,7 +225,7 @@ def inicia_jogo(banco_de_questoes):
                         if ajudas == 0:
                             print(f"\n{Fore.YELLOW}Ok, lá vem ajuda! ATENÇÃO: Você não tem mais direito a ajudas!{Style.RESET_ALL}")
                         else:
-                            print(f"\nOk, lá vem ajuda! Você ainda tem {ajudas} ajudas!")
+                            print(f"\n{Fore.CYAN}Ok, lá vem ajuda! Você ainda tem {ajudas} ajudas!{Style.RESET_ALL}")
                         input("Aperte ENTER para continuar...")
                         gera_ajuda(questao_atual)
                         ajuda_usada_na_rodada = True
@@ -244,7 +244,7 @@ def inicia_jogo(banco_de_questoes):
                         if pulos == 0:
                             print(f"{Fore.YELLOW}Ok, pulando! ATENÇÃO: Você não tem mais direito a pulos!{Style.RESET_ALL}")
                         else:
-                           print(f"Ok, pulando... Você ainda tem {pulos} pulos.")
+                           print(f"{Fore.CYAN}Ok, pulando... Você ainda tem {pulos} pulos.{Style.RESET_ALL}")
 
                         input("Aperte ENTER para continuar...")
                         questoes_ja_sorteadas.append(questao_atual) 
@@ -257,7 +257,7 @@ def inicia_jogo(banco_de_questoes):
                     premio_garantido = premios[acertos - 1] if acertos > 0 else 0
 
                     while True:
-                        confirmacao = input(f'\nDeseja mesmo parar [S/N]?? Caso responda "S", sairá com R$ {premio_garantido:.2f}!\n').upper()
+                        confirmacao = input(f'\n{Fore.CYAN}Deseja mesmo parar [S/N]?? Caso responda "S", sairá com R$ {premio_garantido:.2f}!\n{Style.RESET_ALL}').upper()
                         if confirmacao == 'S':
                             print(f"\n{Fore.GREEN}Ok! Você parou e seu prêmio é de R$ {premio_garantido:.2f}{Style.RESET_ALL}")
                             return
