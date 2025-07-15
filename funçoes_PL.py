@@ -1,5 +1,8 @@
 import random
+from colorama import Fore, Style, init
 from banco_questoes import questoes_originais
+
+init(autoreset=True)
 
 
 def transforma_base(questoes_originais):
@@ -121,8 +124,8 @@ def sorteia_questao_inedita(questoes, nivel, questoes_sorteadas):
             return questao_sugerida
         
 
-def questao_para_texto(questao, id):
-    cabecalho = f"{'-'*40}\nQUESTAO {id}\n\n{questao['titulo']}\n\nRESPOSTAS:\n"
+def questao_para_texto(questao, id, cor=""):
+    cabecalho = f"{cor}{'-'*40}\nQUESTAO {id}\n\n{questao['titulo']}\n\nRESPOSTAS:\n"
 
     opcoes_formatadas = []
 
@@ -154,18 +157,18 @@ def gera_ajuda(questao):
     #str de saída
     texto_das_dicas = ' | '.join(dicas_selecionadas)
 
-    dica_formatada = f"DICA:\nOpções certamente erradas: {texto_das_dicas}"
+    dica_formatada = f"{Fore.GREEN}DICA:\nOpções certamente erradas: {texto_das_dicas}"
     print(dica_formatada)
     input("Aperte ENTER para continuar...")
 
     return ""
 
 def inicia_jogo(banco_de_questoes):
-    print("Olá! Você está na Fortuna DesSoft e terá a oportunidade de enriquecer!")
+    print(f"{Fore.BLUE}Olá! Você está na Fortuna DesSoft e terá a oportunidade de enriquecer!{Style.RESET_ALL}")
     nome_jogador = input("Qual seu nome?")
 
-    print(f"\nOk {nome_jogador.upper()}, você tem direito a pular 3 vezes e 2 ajudas!")
-    print('As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!')
+    print(f"\nOk {Style.BRIGHT}{Fore.YELLOW}{nome_jogador.upper()}, você tem direito a pular 3 vezes e 2 ajudas!")
+    print(f'{Style.BRIGHT}{Fore.MAGENTA}As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!{Style.RESET_ALL}')
     input("\nAperte ENTER para continuar...")
 
     questoes_ja_sorteadas = []
@@ -187,7 +190,7 @@ def inicia_jogo(banco_de_questoes):
             if questao_atual is None:
                 if i < len(niveis) - 1:
                     proximo_nivel = niveis[i+1]
-                    print(f"\nHEY! Você passou para o nível {proximo_nivel.upper()}!")
+                    print(f"\n{Style.BRIGHT}{Fore.CYAN}HEY! Você passou para o nível {proximo_nivel.upper()}!")
                 break 
             
             ajuda_usada_na_rodada = False
@@ -200,27 +203,27 @@ def inicia_jogo(banco_de_questoes):
                     if resposta == questao_atual['correta']:
                         premio_atual = premios[acertos]
                         acertos +=1
-                        print(f"\nVocê acertou! Seu prêmio atual é de R$ {premio_atual:.2f}")
+                        print(f"\n{Fore.GREEN}Você acertou! Seu prêmio atual é de R$ {premio_atual:.2f}")
 
                         if acertos == len(premios):
-                            print(f"\nPARABÉNS {nome_jogador.upper()}, você zerou o jogo e ganhou um milhão de reais!")
+                            print(f"\n{Style.BRIGHT}{Fore.YELLOW}PARABÉNS {nome_jogador.upper()}, você zerou o jogo e ganhou um milhão de reais!")
                             return 
 
                         input("Aperte ENTER para continuar...")
                         break
                     else:
-                        print("\nQue pena! Você errou e vai sair sem nada :(")
+                        print(f"\n{Fore.RED}Que pena! Você errou e vai sair sem nada :({Style.RESET_ALL}")
                         return
                 
                 elif resposta == 'AJUDA':
                     if ajuda_usada_na_rodada:
-                        print("\nNão deu! Você já pediu ajuda nesta questão!")
+                        print(f"\n{Fore.RED}Não deu! Você já pediu ajuda nesta questão!{Style.RESET_ALL}")
                         input("Aperte ENTER para continuar...")
                     elif ajudas >0:
                         ajudas -= 1
 
                         if ajudas == 0:
-                            print(f"\nOk, lá vem ajuda! ATENÇÃO: Você não tem mais direito a ajudas!")
+                            print(f"\n{Fore.YELLOW}Ok, lá vem ajuda! ATENÇÃO: Você não tem mais direito a ajudas!{Style.RESET_ALL}")
                         else:
                             print(f"\nOk, lá vem ajuda! Você ainda tem {ajudas} ajudas!")
                         input("Aperte ENTER para continuar...")
@@ -228,7 +231,7 @@ def inicia_jogo(banco_de_questoes):
                         ajuda_usada_na_rodada = True
 
                     else:
-                        print("\nNão deu! Você não tem mais direito a ajudas!")
+                        print(f"\n{Fore.RED}Não deu! Você não tem mais direito a ajudas!{Style.RESET_ALL}")
                     
                     if not ajuda_usada_na_rodada:
                         input("Aperte ENTER para continuar...")
@@ -239,7 +242,7 @@ def inicia_jogo(banco_de_questoes):
                         pulos -= 1
 
                         if pulos == 0:
-                            print("Ok, pulando! ATENÇÃO: Você não tem mais direito a pulos!")
+                            print(f"{Fore.YELLOW}Ok, pulando! ATENÇÃO: Você não tem mais direito a pulos!{Style.RESET_ALL}")
                         else:
                            print(f"Ok, pulando... Você ainda tem {pulos} pulos.")
 
@@ -247,7 +250,7 @@ def inicia_jogo(banco_de_questoes):
                         questoes_ja_sorteadas.append(questao_atual) 
                         break 
                     else:
-                        print("Não deu! Você não tem mais direito a pulos!")
+                        print(f"{Fore.RED}Não deu! Você não tem mais direito a pulos!{Style.RESET_ALL}")
                         input("Aperte ENTER para continuar...")
                 
                 elif resposta == 'PARAR':
@@ -256,15 +259,15 @@ def inicia_jogo(banco_de_questoes):
                     while True:
                         confirmacao = input(f'\nDeseja mesmo parar [S/N]?? Caso responda "S", sairá com R$ {premio_garantido:.2f}!\n').upper()
                         if confirmacao == 'S':
-                            print(f"\nOk! Você parou e seu prêmio é de R$ {premio_garantido:.2f}")
+                            print(f"\n{Fore.GREEN}Ok! Você parou e seu prêmio é de R$ {premio_garantido:.2f}{Style.RESET_ALL}")
                             return
                         elif confirmacao == 'N':
-                            print(questao_para_texto(questao_atual, acertos + 1)) # Re-imprime a questão
+                            print(questao_para_texto(questao_atual, acertos + 1)) 
                             break 
                         else:
-                            print("Opção inválida!")
+                            print(f"\n{Fore.RED}Opção inválida!{Style.RESET_ALL}")
                 else:
-                    print("\nOpção inválida!")
-                    print(f'As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!')
+                    print(f"\n{Fore.RED}Opção inválida!{Style.RESET_ALL}")
+                    print(f'{Fore.MAGENTA}As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!{Style.RESET_ALL}')
                     
-    print(f"\nPARABÉNS {nome_jogador.upper()}! Você zerou o jogo e ganhou um milhão de reais!")
+    print(f"\n{Style.BRIGHT}{Fore.YELLOW}PARABÉNS {nome_jogador.upper()}! Você zerou o jogo e ganhou um milhão de reais!{Style.RESET_ALL}")

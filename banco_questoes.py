@@ -58,6 +58,10 @@ questoes_originais = [{'titulo': 'Qual o resultado da operação 57 + 32?',
           'nivel': 'facil',
           'opcoes': {'A': 'Natação', 'B': 'Vôlei', 'C': 'Ski Cross Country', 'D': 'Futebol'},
           'correta': 'C'},
+        {'titulo': 'Qual a capital do Paraná',
+          'nivel': 'facil',
+          'opcoes': {'A': 'Florianópolis', 'B': 'Fortaleza', 'C': 'Londrina', 'D': 'Curitiba'},
+          'correta': 'D'},
          
          {'titulo': 'Qual o resultado da operação 5 + 2 * 3?',
           'nivel': 'medio',
@@ -158,4 +162,8 @@ questoes_originais = [{'titulo': 'Qual o resultado da operação 57 + 32?',
           'nivel': 'dificil',
           'opcoes': {'A': 'Uma banda de Rock', 'B': 'Uma marca de luxo', 'C': 'Cidade Francesa', 'D': 'Morte de tecido orgânico'},
           'correta': 'D'}
+        {'titulo': 'De acordo com a giria paranaense, o que significa LARGATEAR',
+          'nivel': 'dificil',
+          'opcoes': {'A': 'ficar atoa tomando sol', 'B': 'se rastejar/andar cansado', 'C': 'andar de skate', 'D': 'caminhar'},
+          'correta': 'A'}
         ]
