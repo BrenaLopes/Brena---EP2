@@ -16,3 +16,5 @@ if __name__ == '__main__':
     banco_de_questoes = transforma_base(questoes_originais)
     
     inicia_jogo(banco_de_questoes)
+
+

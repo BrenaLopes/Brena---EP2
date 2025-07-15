@@ -167,12 +167,12 @@ def inicia_jogo(banco_de_questoes):
     questoes_ja_sorteadas = []
     pulos = 3
     ajudas = 2
-    premio_total = 0
-    id_questao_atual = 0
+    acertos = 0 
+    premios = [1000, 5000, 10000, 30000, 50000, 100000, 300000, 500000, 1000000]
 
     niveis = ['facil', 'medio', 'dificil']
 
-    for nivel in niveis:
+    for i, nivel in enumerate(niveis): # Usamos enumerate para saber o índice do nível
         print(f"\nO jogo já vai começar! Lá vem a primeira questão!")
         print(f"Vamos comecar com questões do nível {nivel.upper()}!")
         input("Aperte ENTER para continuar...")
@@ -181,19 +181,25 @@ def inicia_jogo(banco_de_questoes):
             questao_atual = sorteia_questao_inedita(banco_de_questoes, nivel, questoes_ja_sorteadas)
             
             if questao_atual is None:
-                print(f"PARABÉNS, você zerou as questões do nível {nivel.upper()}!")
-                break
-            
-            id_questao_atual += 1
+                if i < len(niveis) - 1:
+                    proximo_nivel = niveis[i+1]
+                    print(f"\nHEY! Você passou para o nível {proximo_nivel.upper()}!")
+                break 
             
             while True:
-                print(questao_para_texto(questao_atual, id_questao_atual))
+                print(questao_para_texto(questao_atual, acertos + 1))
                 resposta = input("Qual sua resposta?! ").upper()
 
                 if resposta in ['A', 'B', 'C', 'D']:
                     if resposta == questao_atual['correta']:
-                        premio_total += 1000
-                        print(f"\nVocê acertou! Seu prêmio atual é de R$ {premio_total:.2f}")
+                        premio_atual = premios[acertos]
+                        acertos +=1
+
+                        print(f"\nVocê acertou! Seu prêmio atual é de R$ {premio_atual:.2f}")
+                        if acertos == len(premios):
+                            print(f"\nPARABÉNS {nome_jogador.upper()}, você zerou o jogo e ganhou um milhão de reais!")
+                            return 
+
                         input("Aperte ENTER para continuar...")
                         break
                     else:
@@ -207,7 +213,7 @@ def inicia_jogo(banco_de_questoes):
                         print(f"Você ainda tem {ajudas} ajudas e {pulos} pulos.")
                         input("\nAperte ENTER para continuar...")
                     else:
-                        print("Você não tem mais ajudas!")
+                        print("Você não tem mais ajudas! Tente responder.")
 
                 elif resposta == 'PULA':
                     if pulos > 0:
@@ -217,14 +223,14 @@ def inicia_jogo(banco_de_questoes):
                         questoes_ja_sorteadas.append(questao_atual) 
                         break 
                     else:
-                        print("Você não tem mais pulos!")
+                        print("Você não tem mais pulos! Tente responder.")
                 
                 elif resposta == 'PARAR':
-                    print(f"\nOk! Você decidiu parar. Seu prêmio final é de R$ {premio_total:.2f}")
+                    premio_final = premios[acertos - 1] if acertos > 0 else 0
+                    print(f"\nOk! Você decidiu parar. Seu prêmio final é de R$ {premio_atual:.2f}")
                     return
                 
                 else:
                     print("\nOpção inválida! As opções são 'A', 'B', 'C', 'D', 'ajuda', 'pula' ou 'parar'.")
                     input("Aperte ENTER para tentar novamente...")
-    print(f"\nPARABÉNS {nome_jogador.upper()}! Você zerou o jogo e ganhou R$ {premio_total:.2f}!")
-
+    
