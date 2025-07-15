@@ -1,5 +1,3 @@
-
-
 from funçoes_PL import (
     transforma_base,
     valida_questoes,

@@ -153,8 +153,12 @@ def gera_ajuda(questao):
 
     #str de saída
     texto_das_dicas = ' | '.join(dicas_selecionadas)
-    
-    return f"DICA:\nOpções certamente erradas: {texto_das_dicas}"
+
+    dica_formatada = f"DICA:\nOpções certamente erradas: {texto_das_dicas}"
+    print(dica_formatada)
+    input("Aperte ENTER para continuar...")
+
+    return ""
 
 def inicia_jogo(banco_de_questoes):
     print("Olá! Você está na Fortuna DesSoft e terá a oportunidade de enriquecer!")
@@ -186,6 +190,8 @@ def inicia_jogo(banco_de_questoes):
                     print(f"\nHEY! Você passou para o nível {proximo_nivel.upper()}!")
                 break 
             
+            ajuda_usada_na_rodada = False
+
             while True:
                 print(questao_para_texto(questao_atual, acertos + 1))
                 resposta = input("Qual sua resposta?! ").upper()
@@ -194,8 +200,8 @@ def inicia_jogo(banco_de_questoes):
                     if resposta == questao_atual['correta']:
                         premio_atual = premios[acertos]
                         acertos +=1
-
                         print(f"\nVocê acertou! Seu prêmio atual é de R$ {premio_atual:.2f}")
+
                         if acertos == len(premios):
                             print(f"\nPARABÉNS {nome_jogador.upper()}, você zerou o jogo e ganhou um milhão de reais!")
                             return 
@@ -207,30 +213,52 @@ def inicia_jogo(banco_de_questoes):
                         return
                 
                 elif resposta == 'AJUDA':
-                    if ajudas > 0:
+                    if ajuda_usada_na_rodada:
+                        print("\nNão deu! Você já pediu ajuda nesta questão!")
+                        input("Aperte ENTER para continuar...")
+                    elif ajudas >0:
                         ajudas -= 1
-                        print(gera_ajuda(questao_atual))
-                        print(f"Você ainda tem {ajudas} ajudas e {pulos} pulos.")
-                        input("\nAperte ENTER para continuar...")
+
+                        if ajudas == 0:
+                            print(f"\nOk, lá vem ajuda! ATENÇÃO: Você não tem mais direito a ajudas!")
+                        else:
+                            print(f"\nOk, lá vem ajuda! Você ainda tem {ajudas} ajudas!")
+                        input("Aperte ENTER para continuar...")
+                        gera_ajuda(questao_atual)
+                        ajuda_usada_na_rodada = True
+
                     else:
-                        print("Você não tem mais ajudas! Tente responder.")
+                        print("\nNão deu! Você não tem mais direito a ajudas!")
+                    
+                    if not ajuda_usada_na_rodada:
+                        input("Aperte ENTER para continuar...")
+
 
                 elif resposta == 'PULA':
                     if pulos > 0:
                         pulos -= 1
-                        print(f"Ok, pulando... Você ainda tem {pulos} pulos.")
-        
+
+                        if pulos == 0:
+                            print("Ok, pulando! ATENÇÃO: Você não tem mais direito a pulos!")
+                        else:
+                           print(f"Ok, pulando... Você ainda tem {pulos} pulos.")
+
+                        input("Aperte ENTER para continuar...")
                         questoes_ja_sorteadas.append(questao_atual) 
                         break 
                     else:
-                        print("Você não tem mais pulos! Tente responder.")
+                        print("Não deu! Você não tem mais direito a pulos!")
+                        input("Aperte ENTER para continuar...")
                 
                 elif resposta == 'PARAR':
-                    premio_final = premios[acertos - 1] if acertos > 0 else 0
-                    print(f"\nOk! Você decidiu parar. Seu prêmio final é de R$ {premio_atual:.2f}")
-                    return
+                    premio_garantido = premios[acertos - 1] if acertos > 0 else 0
+                    confirmacao = input(f'\nDeseja mesmo parar [S/N]?? Caso responda "S", sairá com R$ {premio_garantido:.2f}!\n').upper()
+                    if confirmacao == 'S':
+                        print(f"\nOk! Você parou e seu prêmio é de R$ {premio_garantido:.2f}")
+                        return
                 
                 else:
                     print("\nOpção inválida! As opções são 'A', 'B', 'C', 'D', 'ajuda', 'pula' ou 'parar'.")
                     input("Aperte ENTER para tentar novamente...")
     
+    print(f"\nPARABÉNS {nome_jogador.upper()}! Você zerou o jogo e ganhou um milhão de reais!")
