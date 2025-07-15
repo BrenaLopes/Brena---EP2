@@ -191,9 +191,9 @@ def inicia_jogo(banco_de_questoes):
                 break 
             
             ajuda_usada_na_rodada = False
+            print(questao_para_texto(questao_atual, acertos + 1))
 
             while True:
-                print(questao_para_texto(questao_atual, acertos + 1))
                 resposta = input("Qual sua resposta?! ").upper()
 
                 if resposta in ['A', 'B', 'C', 'D']:
@@ -252,13 +252,19 @@ def inicia_jogo(banco_de_questoes):
                 
                 elif resposta == 'PARAR':
                     premio_garantido = premios[acertos - 1] if acertos > 0 else 0
-                    confirmacao = input(f'\nDeseja mesmo parar [S/N]?? Caso responda "S", sairá com R$ {premio_garantido:.2f}!\n').upper()
-                    if confirmacao == 'S':
-                        print(f"\nOk! Você parou e seu prêmio é de R$ {premio_garantido:.2f}")
-                        return
-                
+
+                    while True:
+                        confirmacao = input(f'\nDeseja mesmo parar [S/N]?? Caso responda "S", sairá com R$ {premio_garantido:.2f}!\n').upper()
+                        if confirmacao == 'S':
+                            print(f"\nOk! Você parou e seu prêmio é de R$ {premio_garantido:.2f}")
+                            return
+                        elif confirmacao == 'N':
+                            print(questao_para_texto(questao_atual, acertos + 1)) # Re-imprime a questão
+                            break 
+                        else:
+                            print("Opção inválida!")
                 else:
-                    print("\nOpção inválida! As opções são 'A', 'B', 'C', 'D', 'ajuda', 'pula' ou 'parar'.")
-                    input("Aperte ENTER para tentar novamente...")
-    
+                    print("\nOpção inválida!")
+                    print(f'As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!')
+                    
     print(f"\nPARABÉNS {nome_jogador.upper()}! Você zerou o jogo e ganhou um milhão de reais!")
