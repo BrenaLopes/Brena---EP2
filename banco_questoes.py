@@ -1,4 +1,5 @@
-questoes = [{'titulo': 'Qual o resultado da operação 57 + 32?',
+
+questoes_originais = [{'titulo': 'Qual o resultado da operação 57 + 32?',
           'nivel': 'facil',
           'opcoes': {'A': '-19', 'B': '85', 'C': '89', 'D': '99'},
           'correta': 'C'},

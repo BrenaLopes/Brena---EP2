@@ -1,25 +1,30 @@
 import random
+from banco_questoes import questoes_originais
 
-def transforma_base(questoes):
+
+def transforma_base(questoes_originais):
     niveis = {}
     lista_facil = []
     lista_medio = []
     lista_dificil = []
-    for i in range(len(questoes)):
-        questao = questoes[i]  
+    for questao in questoes_originais:
         if questao["nivel"] == "facil":
             lista_facil.append(questao)
         elif questao["nivel"] == "medio":
             lista_medio.append(questao)
-        elif  questao["nivel"] == "dificil":
+        elif questao["nivel"] == "dificil":
             lista_dificil.append(questao)
-    if lista_facil != []:        
+
+    if lista_facil != []:
         niveis["facil"] = lista_facil
     if lista_medio != []:
         niveis["medio"] = lista_medio
     if lista_dificil != []:
         niveis["dificil"] = lista_dificil
+        
     return niveis
+
+
 
 def valida_questao(questao):
     erros = {}
@@ -150,3 +155,76 @@ def gera_ajuda(questao):
     texto_das_dicas = ' | '.join(dicas_selecionadas)
     
     return f"DICA:\nOpções certamente erradas: {texto_das_dicas}"
+
+def inicia_jogo(banco_de_questoes):
+    print("Olá! Você está na Fortuna DesSoft e terá a oportunidade de enriquecer!")
+    nome_jogador = input("Qual seu nome?")
+
+    print(f"\nOk {nome_jogador.upper()}, você tem direito a pular 3 vezes e 2 ajudas!")
+    print('As opções de resposta são "A", "B", "C", "D", "ajuda", "pula" e "parar"!')
+    input("\nAperte ENTER para continuar...")
+
+    questoes_ja_sorteadas = []
+    pulos = 3
+    ajudas = 2
+    premio_total = 0
+    id_questao_atual = 0
+
+    niveis = ['facil', 'medio', 'dificil']
+
+    for nivel in niveis:
+        print(f"\nO jogo já vai começar! Lá vem a primeira questão!")
+        print(f"Vamos comecar com questões do nível {nivel.upper()}!")
+        input("Aperte ENTER para continuar...")
+
+        while True:
+            questao_atual = sorteia_questao_inedita(banco_de_questoes, nivel, questoes_ja_sorteadas)
+            
+            if questao_atual is None:
+                print(f"PARABÉNS, você zerou as questões do nível {nivel.upper()}!")
+                break
+            
+            id_questao_atual += 1
+            
+            while True:
+                print(questao_para_texto(questao_atual, id_questao_atual))
+                resposta = input("Qual sua resposta?! ").upper()
+
+                if resposta in ['A', 'B', 'C', 'D']:
+                    if resposta == questao_atual['correta']:
+                        premio_total += 1000
+                        print(f"\nVocê acertou! Seu prêmio atual é de R$ {premio_total:.2f}")
+                        input("Aperte ENTER para continuar...")
+                        break
+                    else:
+                        print("\nQue pena! Você errou e vai sair sem nada :(")
+                        return
+                
+                elif resposta == 'AJUDA':
+                    if ajudas > 0:
+                        ajudas -= 1
+                        print(gera_ajuda(questao_atual))
+                        print(f"Você ainda tem {ajudas} ajudas e {pulos} pulos.")
+                        input("\nAperte ENTER para continuar...")
+                    else:
+                        print("Você não tem mais ajudas!")
+
+                elif resposta == 'PULA':
+                    if pulos > 0:
+                        pulos -= 1
+                        print(f"Ok, pulando... Você ainda tem {pulos} pulos.")
+        
+                        questoes_ja_sorteadas.append(questao_atual) 
+                        break 
+                    else:
+                        print("Você não tem mais pulos!")
+                
+                elif resposta == 'PARAR':
+                    print(f"\nOk! Você decidiu parar. Seu prêmio final é de R$ {premio_total:.2f}")
+                    return
+                
+                else:
+                    print("\nOpção inválida! As opções são 'A', 'B', 'C', 'D', 'ajuda', 'pula' ou 'parar'.")
+                    input("Aperte ENTER para tentar novamente...")
+    print(f"\nPARABÉNS {nome_jogador.upper()}! Você zerou o jogo e ganhou R$ {premio_total:.2f}!")
+
